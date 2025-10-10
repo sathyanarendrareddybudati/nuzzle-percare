@@ -1,0 +1,53 @@
+# ===================================
+# Composer dependencies
+# ===================================
+/vendor/
+
+# ===================================
+# Environment & Config Files
+# ===================================
+.env
+.env.local
+.env.*.local
+
+# ===================================
+# IDE & Editor Files
+# ===================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===================================
+# System / OS Files
+# ===================================
+.DS_Store
+Thumbs.db
+
+# ===================================
+# Logs & Temporary Files
+# ===================================
+logs/
+*.log
+*.tmp
+*.cache
+.cache/
+temp/
+tmp/
+
+# ===================================
+# PHP Specific
+# ===================================
+/composer.lock
+phpunit.xml
+phpunit.xml.dist
+coverage/
+build/
+node_modules/
+
+# ===================================
+# Uploads or Generated Files
+# ===================================
+uploads/
+storage/
+public/uploads/
