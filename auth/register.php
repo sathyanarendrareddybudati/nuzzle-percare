@@ -151,20 +151,20 @@ unset($_SESSION['form_data']);
                             </div>
                         </div>
                         <div class="mb-4">
-        <label class="form-label">Register as:</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="role_id" id="role_pet_owner" value="3" required>
-            <label class="form-check-label" for="role_pet_owner">
-                Pet Owner
-            </label>
-        </div>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="role_id" id="role_service_provider" value="4" required>
-            <label class="form-check-label" for="role_service_provider">
-                Service Provider
-            </label>
-        </div>
-    </div>
+                            <label class="form-label">Register as:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="role_id" id="role_pet_owner" value="3" required>
+                                <label class="form-check-label" for="role_pet_owner">
+                                    Pet Owner
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="role_id" id="role_service_provider" value="4" required>
+                                <label class="form-check-label" for="role_service_provider">
+                                    Service Provider
+                                </label>
+                            </div>
+                        </div>
                         
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone Number (Optional)</label>
@@ -233,7 +233,6 @@ unset($_SESSION['form_data']);
 (function () {
     'use strict';
     
-    // Toggle password visibility
     document.querySelectorAll('.toggle-password').forEach(function(button) {
         button.addEventListener('click', function() {
             const input = this.parentNode.querySelector('input');
@@ -267,7 +266,6 @@ unset($_SESSION['form_data']);
     password.onchange = validatePassword;
     confirmPassword.onkeyup = validatePassword;
     
-    // Prevent submission if form is invalid
     form.addEventListener('submit', function (event) {
         if (!form.checkValidity()) {
             event.preventDefault();
@@ -280,6 +278,5 @@ unset($_SESSION['form_data']);
 </script>
 
 <?php
-// Include footer
 require_once __DIR__ . '/../includes/footer.php';
 ?>

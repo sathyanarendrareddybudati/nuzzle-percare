@@ -18,9 +18,7 @@ class User {
         $this->db = getDbConnection();
     }
 
-    // Create a new user
     public function create($data = []) {
-        // Set properties from data array if provided
         if (!empty($data)) {
             foreach ($data as $key => $value) {
                 if (property_exists($this, $key)) {
@@ -40,19 +38,16 @@ class User {
 
         $stmt = $this->db->prepare($query);
 
-        // Sanitize data
         $this->name = htmlspecialchars(strip_tags($this->name));
         $this->email = htmlspecialchars(strip_tags($this->email));
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
         $this->phone_number = htmlspecialchars(strip_tags($this->phone_number));
-        $this->location_id = $this->location_id ?? null; // Default to null if not set
+        $this->location_id = $this->location_id ?? null;
 
-        // Ensure role_id is set and valid
         if (!in_array($this->role_id, [2, 3, 4])) {
             throw new Exception('Invalid role_id provided');
         }
 
-        // Bind data
         $stmt->bindParam(':role_id', $this->role_id);
         $stmt->bindParam(':name', $this->name);
         $stmt->bindParam(':email', $this->email);
@@ -69,7 +64,6 @@ class User {
         return false;
     }
 
-    // Get user by email
     public function getByEmail($email) {
         $query = 'SELECT u.*, r.name as role_name, l.city, l.state, l.country 
                  FROM ' . $this->table . ' u 
@@ -84,7 +78,6 @@ class User {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Get user by ID
     public function getById($id) {
         $query = 'SELECT u.*, r.name as role_name, l.city, l.state, l.country 
                  FROM ' . $this->table . ' u 

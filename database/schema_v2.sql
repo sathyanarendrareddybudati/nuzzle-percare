@@ -1,4 +1,3 @@
--- Drop existing tables if they exist (in reverse order of dependencies)
 DROP TABLE IF EXISTS documents;
 DROP TABLE IF EXISTS communication_log;
 DROP TABLE IF EXISTS faqs;
@@ -10,7 +9,6 @@ DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS pet_categories;
 
--- 1. ROLES Table
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
@@ -18,13 +16,11 @@ CREATE TABLE roles (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert default roles
 INSERT INTO roles (name, description) VALUES 
 ('admin', 'Administrator with full access'),
 ('pet_owner', 'Pet owner who can post ads and book services'),
 ('service_provider', 'Service provider who can offer services');
 
--- 2. LOCATIONS Table
 CREATE TABLE locations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
@@ -37,13 +33,12 @@ CREATE TABLE locations (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert some sample locations
+
 INSERT INTO locations (name, city, state, country, pin_code) VALUES 
 ('Downtown', 'New York', 'NY', 'USA', 10001),
 ('Westside', 'Los Angeles', 'CA', 'USA', 90001),
 ('Central', 'Chicago', 'IL', 'USA', 60601);
 
--- 3. USERS Table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     role_id INT NOT NULL,

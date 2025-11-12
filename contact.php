@@ -1,5 +1,4 @@
 <?php
-// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -8,7 +7,6 @@ $pageTitle = 'Contact Us - PetCare';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Contact Header -->
 <div class="contact-header bg-primary text-white py-5">
     <div class="container text-center">
         <h1 class="display-4 fw-bold mb-3">Get In Touch</h1>
@@ -16,7 +14,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- Contact Form Section -->
 <div class="py-5">
     <div class="container">
         <div class="row justify-content-center">
@@ -57,7 +54,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- Contact Information -->
 <div class="py-5 bg-light">
     <div class="container">
         <div class="row g-4">
@@ -86,7 +82,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<!-- Google Map -->
 <div class="map-container">
     <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209179347!2d-73.98784492404432!3d40.74844097138992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
