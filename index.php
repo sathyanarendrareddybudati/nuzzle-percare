@@ -2,7 +2,11 @@
 declare(strict_types=1);
 
 require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/bootstrap/app.php';
+
+// Load .env here (no bootstrap/app.php file needed)
+if (class_exists(\Dotenv\Dotenv::class) && is_file(__DIR__.'/.env')) {
+    \Dotenv\Dotenv::createImmutable(__DIR__)->load();
+}
 
 use App\Core\Router;
 

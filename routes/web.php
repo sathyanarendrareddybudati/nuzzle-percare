@@ -4,6 +4,7 @@ use App\Controllers\HomeController;
 use App\Controllers\PetsController;
 use App\Controllers\AuthController;
 use App\Controllers\ContactController;
+use App\Controllers\AboutUsController;
 
 /** @var \App\Core\Router $router */
 
@@ -19,6 +20,7 @@ $router->post('/login', [AuthController::class, 'login']);
 $router->get('/register', [AuthController::class, 'showRegister']);
 $router->post('/register', [AuthController::class, 'register']);
 $router->get('/logout', [AuthController::class, 'logout']);
+$router->get('/aboutus', [AboutUsController::class, 'index']);
 
 $router->get('/contact', [ContactController::class, 'index']);
 $router->post('/contact', [ContactController::class, 'submit']);
