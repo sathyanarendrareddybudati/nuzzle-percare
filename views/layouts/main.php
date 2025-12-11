@@ -21,7 +21,7 @@
         body {
             font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             color: #333;
-            background-color: var(--bg-sides); /* This creates the blue sides */
+            /* background-color: var(--bg-sides); This creates the blue sides */
             min-height: 100vh;
             margin: 0;
             display: flex;
@@ -32,7 +32,7 @@
         .page-wrapper {
             background-color: #ffffff;
             width: 100%;
-            max-width: 1400px; /* Limits width to create the sides */
+            /* max-width: 1400px; Limits width to create the sides */
             margin: 0 auto;    /* Centers the wrapper */
             min-height: 100vh; /* Ensures it fills height */
             display: flex;
@@ -106,7 +106,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="/"><i class="fas fa-paw me-2"></i>PetCare</a>
+        <a class="navbar-brand" href="/"><i class="fas fa-paw me-2"></i>Nuzzle</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -150,75 +150,6 @@
 </nav>
 
 <div class="page-wrapper">
-
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="/"><i class="fas fa-paw me-2"></i>NUZZLEPetCare</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/pets"><i class="fas fa-paw"></i> Browse Pets</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <?php if (!empty($_SESSION['user_id'])): ?>
-                        <div class="dropdown ms-3">
-                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userDropdown"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle me-1"></i>
-                                <?= e($_SESSION['user_name'] ?? 'My Account') ?>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="/dashboard"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-                                <li><a class="dropdown-item" href="/my-pets"><i class="fas fa-paw me-2"></i>My Pets</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                            </ul>
-                        </div>
-                        <a href="/pets/create" class="btn btn-primary ms-2"><i class="fas fa-plus me-2"></i>List a Pet</a>
-                    <?php else: ?>
-                        <div class="btn-group ms-3">
-                            <a href="/login" class="btn btn-outline-primary"><i class="fas fa-sign-in-alt me-1"></i>Login</a>
-                            <a href="/register" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i>Register</a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
-                <h5 class="mb-4">Quick Links</h5>
-                <ul class="list-unstyled footer-links">
-                    <li class="mb-2"><a href="/" class="d-flex align-items-center"><i class="fas fa-chevron-right me-2 small"></i> Home</a></li>
-                    <li class="mb-2"><a href="/pets" class="d-flex align-items-center"><i class="fas fa-chevron-right me-2 small"></i> Browse Pets</a></li>
-                    <li class="mb-2"><a href="/contact" class="d-flex align-items-center"><i class="fas fa-chevron-right me-2 small"></i> Contact</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="mb-4">Contact Us</h5>
-                <ul class="list-unstyled contact-info">
-                    <li class="mb-3 d-flex"><i class="fas fa-map-marker-alt me-3 mt-1"></i><span>28, rue Notre des Champs ,Paris, France</span></li>
-                    <li class="mb-3 d-flex"><i class="fas fa-phone me-3 mt-1"></i><a href="tel:+33 78965432" class="text-decoration-none">+33 78965432</a></li>
-                    <li class="mb-3 d-flex"><i class="fas fa-envelope me-3 mt-1"></i><a href="mailto:info@petcare.com" class="text-decoration-none">info@petcare.com</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3">
-                <h5 class="mb-4">Newsletter</h5>
-                <form class="mt-3">
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Your email address" required>
-                        <button class="btn btn-primary px-3" type="submit"><i class="fas fa-paper-plane"></i></button>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="privacyPolicy" required>
-                        <label class="form-check-label small" for="privacyPolicy">I agree to the <a href="#" class="text-decoration-underline">Privacy Policy</a></label>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </nav>
 
     <div class="container mt-3">
         <?php if ($m = Session::flash('success')): ?>
