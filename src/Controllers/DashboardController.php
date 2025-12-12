@@ -6,19 +6,15 @@ use App\Core\Session;
 
 class DashboardController extends Controller
 {
-    public function __construct()
+    public function index(): void
     {
-        parent::__construct();
-        // It's better to handle auth checks in the methods themselves or via middleware,
-        // but for now, let's fix the immediate error.
+        // Perform the authentication check at the beginning of the method.
         if (!Session::get('user_id')) {
             Session::flash('error', 'You must be logged in to view the dashboard.');
             $this->redirect('/login');
+            return; // Stop execution after redirecting
         }
-    }
 
-    public function index(): void
-    {
         $role = Session::get('user_role');
 
         switch ($role) {
