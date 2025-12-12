@@ -9,9 +9,11 @@ class DashboardController extends Controller
     public function __construct()
     {
         parent::__construct();
+        // It's better to handle auth checks in the methods themselves or via middleware,
+        // but for now, let's fix the immediate error.
         if (!Session::get('user_id')) {
             Session::flash('error', 'You must be logged in to view the dashboard.');
-            redirect('/login');
+            $this->redirect('/login');
         }
     }
 
@@ -21,7 +23,7 @@ class DashboardController extends Controller
 
         switch ($role) {
             case 'admin':
-                redirect('/admin');
+                $this->redirect('/admin');
                 break;
             case 'owner':
                 $this->render('dashboard/owner', ['pageTitle' => 'Owner Dashboard']);
@@ -31,7 +33,7 @@ class DashboardController extends Controller
                 break;
             default:
                 Session::flash('error', 'Invalid user role.');
-                redirect('/');
+                $this->redirect('/');
                 break;
         }
     }

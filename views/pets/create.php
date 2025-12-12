@@ -11,7 +11,7 @@
               <p class="text-muted mb-0">Add your pet details below</p>
             </div>
 
-            <form method="POST" action="/pets" class="row g-3 needs-validation" novalidate>
+            <form method="POST" action="/pets" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
               <div class="col-md-6">
                 <label class="form-label">Name *</label>
                 <input name="name" class="form-control" value="<?= e($_POST['name'] ?? '') ?>" required>
@@ -53,9 +53,9 @@
                 <div class="invalid-feedback">Please enter a valid price.</div>
               </div>
               <div class="col-md-6">
-                <label class="form-label">Image URL *</label>
-                <input type="url" name="image_url" class="form-control" value="<?= e($_POST['image_url'] ?? '') ?>" required>
-                <div class="invalid-feedback">Please provide a valid image URL.</div>
+                <label class="form-label">Pet Image *</label>
+                <input type="file" name="image" class="form-control" required>
+                <div class="invalid-feedback">Please select an image.</div>
               </div>
 
               <div class="col-md-6">
