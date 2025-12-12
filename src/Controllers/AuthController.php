@@ -20,7 +20,7 @@ class AuthController extends Controller
 
         if (empty($email) || empty($password)) {
             Session::flash('error', 'Please enter both email and password.');
-            redirect('/login');
+            $this->redirect('/login');
             return;
         }
 
@@ -31,13 +31,13 @@ class AuthController extends Controller
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_role'] = $user['role']; // Set user role
+            $_SESSION['user_role'] = $user['role_name']; // Set user role
 
             Session::flash('success', 'Welcome back, ' . e($user['name']) . '!');
-            redirect('/dashboard');
+            $this->redirect('/dashboard');
         } else {
             Session::flash('error', 'Invalid email or password.');
-            redirect('/login');
+            $this->redirect('/login');
         }
     }
 
@@ -52,13 +52,13 @@ class AuthController extends Controller
         $name = trim($_POST['name'] ?? '');
         $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'] ?? '';
-        $role = $_POST['role'] ?? ''; // owner or caretaker
+        $role_id = $_POST['role_id'] ?? ''; // owner or caretaker
 
         $errors = [];
         if (empty($name)) $errors[] = 'Name is required.';
         if (empty($email)) $errors[] = 'A valid email is required.';
         if (strlen($password) < 8) $errors[] = 'Password must be at least 8 characters long.';
-        if (!in_array($role, ['owner', 'caretaker'])) $errors[] = 'Please select a valid role.';
+        if (!in_array($role_id, [2, 3])) $errors[] = 'Please select a valid role.';
 
         $userModel = new User();
         if ($userModel->emailExists($email)) {
@@ -67,7 +67,7 @@ class AuthController extends Controller
 
         if (!empty($errors)) {
             Session::flash('error', implode('<br>', $errors));
-            redirect('/register');
+            $this->redirect('/register');
             return;
         }
 
@@ -75,7 +75,7 @@ class AuthController extends Controller
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'role' => $role,
+            'role_id' => $role_id,
         ]);
 
         if ($userId) {
@@ -83,13 +83,13 @@ class AuthController extends Controller
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_role'] = $user['role_name'];
 
             Session::flash('success', 'Account created successfully! Welcome!');
-            redirect('/dashboard');
+            $this->redirect('/dashboard');
         } else {
             Session::flash('error', 'There was a problem creating your account.');
-            redirect('/register');
+            $this->redirect('/register');
         }
     }
     
@@ -105,14 +105,14 @@ class AuthController extends Controller
 
         if (empty($email)) {
             Session::flash('error', 'Please enter your email address.');
-            redirect('/forgot-password');
+            $this->redirect('/forgot-password');
             return;
         }
 
         $userModel = new User();
         if (!$userModel->emailExists($email)) {
             Session::flash('success', 'If an account with that email exists, a password reset link has been sent.');
-            redirect('/forgot-password');
+            $this->redirect('/forgot-password');
             return;
         }
 
@@ -121,7 +121,7 @@ class AuthController extends Controller
         // For this example, we'll just show a success message.
 
         Session::flash('success', 'If an account with that email exists, a password reset link has been sent.');
-        redirect('/forgot-password');
+        $this->redirect('/forgot-password');
     }
 
 
@@ -130,6 +130,6 @@ class AuthController extends Controller
         Session::start();
         session_unset();
         session_destroy();
-        redirect('/');
+        $this->redirect('/');
     }
 }

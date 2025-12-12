@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 require __DIR__ . '/vendor/autoload.php';
 
+// Load helpers
+require_once __DIR__ . '/src/Core/helpers.php';
+
 // Load .env here (no bootstrap/app.php file needed)
 if (class_exists(\Dotenv\Dotenv::class) && is_file(__DIR__.'/.env')) {
     \Dotenv\Dotenv::createImmutable(__DIR__)->load();
