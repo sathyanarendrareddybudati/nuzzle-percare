@@ -5,6 +5,8 @@ use App\Controllers\PetsController;
 use App\Controllers\AuthController;
 use App\Controllers\ContactController;
 use App\Controllers\AboutUsController;
+use App\Controllers\AdminController;
+use App\Controllers\DashboardController;
 
 /** @var \App\Core\Router $router */
 
@@ -24,6 +26,15 @@ $router->get('/aboutus', [AboutUsController::class, 'index']);
 
 $router->get('/contact', [ContactController::class, 'index']);
 $router->post('/contact', [ContactController::class, 'submit']);
+
+// Admin Routes
+$router->get('/admin', [AdminController::class, 'index']);
+$router->get('/admin/dashboard', [AdminController::class, 'index']);
+$router->get('/admin/users', [AdminController::class, 'users']);
+$router->get('/admin/ads', [AdminController::class, 'ads']);
+
+// Dashboard Route
+$router->get('/dashboard', [DashboardController::class, 'index']);
 
 $router->fallback(function () {
     http_response_code(404);
