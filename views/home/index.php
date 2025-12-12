@@ -98,11 +98,6 @@
         height: 250px;
         object-fit: cover;
     }
-    
-    .how-it-works {
-        background: #f8f9fc; /* Light color from original CSS */
-    }
-
 </style>
 
 <section class="hero-section">
@@ -188,8 +183,8 @@
             <p class="text-muted">Meet some of our amazing pets and their caretakers.</p>
         </div>
         <div class="row g-4">
-            <?php if (!empty($pets)): ?>
-                <?php foreach (array_slice($pets, 0, 3) as $pet): ?>
+            <?php if (!empty($pets)):
+                foreach (array_slice($pets, 0, 3) as $pet): ?>
                     <div class="col-lg-4 col-md-6">
                         <div class="card pet-card h-100">
                             <img src="<?= e($pet['image_url'] ?? 'https://via.placeholder.com/400x300') ?>" class="card-img-top pet-card-img" alt="<?= e($pet['name']) ?>">
@@ -201,8 +196,9 @@
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
+                <?php endforeach;
+            else:
+                ?>
                 <div class="col">
                     <p class="text-center text-muted">No featured pets available at the moment.</p>
                 </div>
@@ -215,35 +211,208 @@
 </section>
 
 <!-- How It Works Section -->
-<section class="py-5 how-it-works">
+<style>
+.how-it-works-section {
+    padding: 6rem 0;
+    background-color: #f8f9fa;
+}
+.step-card {
+    position: relative;
+    text-align: center;
+}
+.step-connector {
+    position: absolute;
+    top: 60px; /* Adjust based on icon size */
+    left: 75%;
+    width: 50%;
+    height: 2px;
+    background-color: #dee2e6; /* Bootstrap border color */
+}
+.step-number {
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.step-icon-wrapper {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+.step-card:hover .step-icon-wrapper {
+    transform: scale(1.05);
+}
+.step-icon {
+    font-size: 3rem;
+    color: #2e59d9;
+}
+.bg-peach {
+    background-color: #fdf2e9;
+}
+.bg-coral-light {
+    background-color: rgba(255, 126, 95, 0.3);
+}
+.bg-primary-light {
+    background-color: rgba(46, 89, 217, 0.2);
+}
+</style>
+
+<section class="how-it-works-section" id="how-it-works">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">How It Works</h2>
-            <p class="text-muted">Finding pet care is simple with our easy 3-step process.</p>
+        <div class="text-center mx-auto mb-5" style="max-width: 600px;">
+            <span class="text-primary fw-semibold text-uppercase small mb-2 d-inline-block">Simple Process</span>
+            <h2 class="display-5 fw-bold text-charcoal mb-3">How Nuzzle Works</h2>
+            <p class="lead text-muted">Finding the perfect pet caretaker has never been easier. Follow these simple steps.</p>
         </div>
-        <div class="row g-4">
-            <div class="col-md-4 text-center">
-                <div class="p-4 rounded-circle bg-white d-inline-block mb-3 shadow-sm">
-                    <i class="fas fa-search fa-2x text-primary"></i>
+
+        <div class="row g-5">
+            <?php
+            $steps = [
+                [
+                    'icon' => 'fa-search',
+                    'title' => 'Search & Discover',
+                    'description' => 'Browse through verified caretakers in your area based on services, ratings, and availability.',
+                    'color' => 'bg-peach',
+                ],
+                [
+                    'icon' => 'fa-comments',
+                    'title' => 'Connect & Communicate',
+                    'description' => 'Message caretakers directly, discuss your pet\'s needs, and find the perfect match.',
+                    'color' => 'bg-coral-light',
+                ],
+                [
+                    'icon' => 'fa-heart',
+                    'title' => 'Book with Confidence',
+                    'description' => 'Schedule your pet care service with a trusted caretaker who loves pets as much as you do.',
+                    'color' => 'bg-primary-light',
+                ],
+                [
+                    'icon' => 'fa-star',
+                    'title' => 'Rate & Review',
+                    'description' => 'After the service, share your experience to help other pet owners find great caretakers.',
+                    'color' => 'bg-peach',
+                ],
+            ];
+            ?>
+
+            <?php foreach ($steps as $index => $step): ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <?php if ($index < count($steps) - 1): ?>
+                            <div class="step-connector d-none d-lg-block"></div>
+                        <?php endif; ?>
+                        
+                        <div class="step-number"><?= $index + 1 ?></div>
+
+                        <div class="step-icon-wrapper <?= $step['color'] ?>">
+                            <i class="fas <?= $step['icon'] ?> step-icon"></i>
+                        </div>
+
+                        <h3 class="h5 fw-bold mb-2"><?= $step['title'] ?></h3>
+                        <p class="text-muted"><?= $step['description'] ?></p>
+                    </div>
                 </div>
-                <h4>1. Search for Care</h4>
-                <p class="text-muted">Use our search to find the perfect pet caretaker by service, location, and date.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="p-4 rounded-circle bg-white d-inline-block mb-3 shadow-sm">
-                    <i class="fas fa-calendar-check fa-2x text-primary"></i>
-                </div>
-                <h4>2. Book & Connect</h4>
-                <p class="text-muted">Send a request. The caretaker will approve and you can connect directly.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="p-4 rounded-circle bg-white d-inline-block mb-3 shadow-sm">
-                    <i class="fas fa-heart fa-2x text-primary"></i>
-                </div>
-                <h4>3. Enjoy Peace of Mind</h4>
-                <p class="text-muted">Your pet receives loving care, and you get updates. It\'s that simple!</p>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
 
+
+<!-- CTA Section -->
+<style>
+.cta-section {
+    padding: 6rem 0;
+}
+.cta-card {
+    position: relative;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral gradient */
+    border-radius: 1.5rem; /* rounded-3xl */
+    padding: 4rem;
+    overflow: hidden;
+    color: #fff;
+}
+.cta-card::before, .cta-card::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+}
+.cta-card::before {
+    width: 250px;
+    height: 250px;
+    top: -100px;
+    right: -100px;
+}
+.cta-card::after {
+    width: 200px;
+    height: 200px;
+    bottom: -80px;
+    left: -80px;
+}
+.cta-content {
+    position: relative;
+    z-index: 1;
+}
+.cta-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 1rem; /* rounded-2xl */
+    margin-bottom: 1.5rem;
+}
+.cta-icon {
+    font-size: 1.75rem; /* w-8 h-8 */
+    color: #fff;
+}
+</style>
+
+<section class="cta-section bg-light" id="post">
+    <div class="container">
+        <div class="cta-card">
+            <div class="cta-content text-center">
+                <div class="col-lg-9 col-md-10 mx-auto">
+                    <div class="cta-icon-wrapper">
+                        <i class="fas fa-heart cta-icon"></i>
+                    </div>
+
+                    <h2 class="display-4 fw-bold text-white mb-4">
+                        Ready to Find the Perfect Care for Your Pet?
+                    </h2>
+
+                    <p class="fs-5 text-white-75 mb-5">
+                        Join our community of loving pet owners and trusted caretakers. Your furry friend deserves the best!
+                    </p>
+
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a href="/register" class="btn btn-light btn-lg px-4 gap-3 fw-bold">
+                            Get Started Free
+                            <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                        <a href="/aboutus" class="btn btn-outline-light btn-lg px-4">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
