@@ -1,21 +1,22 @@
 <?php
 
 use App\Controllers\HomeController;
-use App\Controllers\PetsController;
+use App\Controllers\PetAdsController;
 use App\Controllers\AuthController;
 use App\Controllers\ContactController;
 use App\Controllers\AboutUsController;
 use App\Controllers\AdminController;
 use App\Controllers\DashboardController;
+use App\Controllers\PetAdController;
 
 /** @var \App\Core\Router $router */
 
 $router->get('/', [HomeController::class, 'index']);
 
-$router->get('/pets', [PetsController::class, 'index']);
-$router->get('/pets/create', [PetsController::class, 'create']);
-$router->post('/pets', [PetsController::class, 'store']);
-$router->get('/pets/{id}', [PetsController::class, 'show']);
+$router->get('/pets', [PetAdsController::class, 'index']);
+$router->get('/pets/create', [PetAdsController::class, 'create']);
+$router->post('/pets', [PetAdsController::class, 'store']);
+$router->get('/pets/{id}', [PetAdsController::class, 'show']);
 
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
@@ -39,6 +40,12 @@ $router->get('/admin/ads', [AdminController::class, 'ads']);
 
 // Dashboard Route
 $router->get('/dashboard', [DashboardController::class, 'index']);
+
+// My Ads
+$router->get('/my-ads', [PetAdController::class, 'index']);
+$router->get('/my-ads/create', [PetAdController::class, 'create']);
+$router->post('/my-ads/store', [PetAdController::class, 'store']);
+$router->get('/my-ads/show', [PetAdController::class, 'show']);
 
 $router->fallback(function () {
     http_response_code(404);
