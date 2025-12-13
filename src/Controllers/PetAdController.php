@@ -13,9 +13,16 @@ class PetAdController extends Controller
     {
         Session::start();
         $userId = $_SESSION['user_id'] ?? null;
+        $userRole = $_SESSION['user_role'] ?? null;
 
         if (!$userId) {
             $this->redirect('/login');
+            return;
+        }
+
+        if ($userRole === 'service_provider') {
+            Session::flash('error', 'You are not authorized to view this page.');
+            $this->redirect('/dashboard');
             return;
         }
 
@@ -52,6 +59,14 @@ class PetAdController extends Controller
 
     public function create(): void
     {
+        Session::start();
+        $userRole = $_SESSION['user_role'] ?? null;
+        if ($userRole === 'service_provider') {
+            Session::flash('error', 'You are not authorized to create ads.');
+            $this->redirect('/dashboard');
+            return;
+        }
+
         $serviceModel = new Service();
         $locationModel = new Location();
 
@@ -69,9 +84,17 @@ class PetAdController extends Controller
     {
         Session::start();
         $userId = $_SESSION['user_id'] ?? null;
+        $userRole = $_SESSION['user_role'] ?? null;
+
 
         if (!$userId) {
             $this->redirect('/login');
+            return;
+        }
+
+        if ($userRole === 'service_provider') {
+            Session::flash('error', 'You are not authorized to create ads.');
+            $this->redirect('/dashboard');
             return;
         }
 

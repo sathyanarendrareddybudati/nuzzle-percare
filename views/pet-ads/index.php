@@ -23,7 +23,7 @@
 
 <section class="browse-hero text-center">
     <div class="container">
-        <h1 class="display-5 fw-bold">Find Pet Care Services</h1>
+        <h1 class="display-5 fw-bold">Browse Pet Ads</h1>
         <p class="lead text-muted">Browse ads for pet sitting, dog walking, and more.</p>
     </div>
 </section>
@@ -75,4 +75,22 @@
                                             <span><i class="fas fa-map-marker-alt me-2"></i><?= e($ad['location_name']) ?></span>
                                             <span><i class="fas fa-dollar-sign me-2"></i><?= e(number_format($ad['cost'], 2)) ?></span>
                                         </div>
-                                         <a href="/pets/<?= (int)$ad['id'] ?>" class="btn btn-primary stretched-link mt-.phpinfo();?>
+                                         <a href="/pets/<?= (int)$ad['id'] ?>" class="btn btn-primary stretched-link mt-auto">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="col-12">
+                            <div class="text-center p-5 bg-light rounded">
+                                <i class="fas fa-bullhorn fa-3x text-muted mb-3"></i>
+                                <h4 class="fw-bold">No Ads Found</h4>
+                                <p class="text-muted">There are currently no pet service ads available. Please check back later.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

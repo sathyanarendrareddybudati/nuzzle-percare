@@ -117,7 +117,7 @@ $userRole = $_SESSION['user_role'] ?? null;
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/pets"><i class="fas fa-search me-1"></i>Find a Pet to Care For</a></li>
+                <li class="nav-item"><a class="nav-link" href="/pets"><i class="fas fa-search me-1"></i>Browse Ads</a></li>
                 <li class="nav-item"><a class="nav-link" href="/caretakers"><i class="fas fa-search-plus me-1"></i>Find a Caretaker</a></li>
                 <li class="nav-item"><a class="nav-link" href="/aboutus"><i class="fas fa-info-circle me-1"></i>About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact"><i class="fas fa-envelope me-1"></i>Contact</a></li>
@@ -125,9 +125,9 @@ $userRole = $_SESSION['user_role'] ?? null;
 
             <ul class="navbar-nav align-items-center">
                 <?php if ($userRole): ?>
-                    <?php if (in_array($userRole, ['pet_owner', 'service_provider'])):
-                        echo '<li class="nav-item me-2"><a href="/my-ads/create" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Post an Ad</a></li>';
-                    endif; ?>
+                    <?php if ($userRole === 'pet_owner'): ?>
+                        <li class="nav-item me-2"><a href="/my-ads/create" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Post an Ad</a></li>
+                    <?php endif; ?>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -139,8 +139,11 @@ $userRole = $_SESSION['user_role'] ?? null;
                                 <li><a class="dropdown-item" href="/admin/dashboard"><i class="fas fa-user-shield me-2"></i>Admin Panel</a></li>
                             <?php else: ?>
                                 <li><a class="dropdown-item" href="/dashboard"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-                                <li><a class="dropdown-item" href="/my-ads"><i class="fas fa-list me-2"></i>My Ads</a></li>
+                                <?php if ($userRole === 'pet_owner'): ?>
+                                    <li><a class="dropdown-item" href="/my-ads"><i class="fas fa-list me-2"></i>My Ads</a></li>
+                                <?php endif; ?>
                                 <?php if ($userRole === 'service_provider'): ?>
+                                    <li><a class="dropdown-item" href="/caretaker/profile"><i class="fas fa-user-circle me-2"></i>My Profile</a></li>
                                     <li><a class="dropdown-item" href="/my-schedule"><i class="fas fa-calendar-alt me-2"></i>My Schedule</a></li>
                                 <?php endif; ?>
                                 <li><a class="dropdown-item" href="/messages"><i class="fas fa-inbox me-2"></i>Messages</a></li>
@@ -200,7 +203,7 @@ $userRole = $_SESSION['user_role'] ?? null;
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="mb-4">Contact Us</h5>
+                <h5 class_name="mb-4">Contact Us</h5>
                 <ul class="list-unstyled contact-info">
                     <li class="mb-3 d-flex"><i class="fas fa-map-marker-alt me-3 mt-1"></i><span>28, rue Notre des Champs ,Paris, France</span></li>
                     <li class="mb-3 d-flex"><i class="fas fa-phone me-3 mt-1"></i><a href="tel:+33 78965432" class="text-decoration-none">+33 78965432</a></li>

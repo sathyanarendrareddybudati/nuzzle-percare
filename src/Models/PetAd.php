@@ -14,7 +14,8 @@ class PetAd extends Model
                 JOIN locations l ON pa.location_id = l.id
                 JOIN users u ON pa.user_id = u.id
                 ORDER BY pa.created_at DESC";
-        return $this->db->query($sql)->findAll();
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findAllWithFilters(array $filters): array
@@ -38,17 +39,14 @@ class PetAd extends Model
         }
 
         $sort = $filters['sort'] ?? 'newest';
-        switch ($sort) {
-            case 'oldest':
-                $sql .= " ORDER BY pa.created_at ASC";
-                break;
-            case 'newest':
-            default:
-                $sql .= " ORDER BY pa.created_at DESC";
-                break;
-        }
+        $sql .= match ($sort) {
+            'oldest' => " ORDER BY pa.created_at ASC",
+            default => " ORDER BY pa.created_at DESC",
+        };
 
-        return $this->db->query($sql, $params)->findAll();
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getAdsByUserId(int $userId): array
@@ -58,7 +56,9 @@ class PetAd extends Model
                 JOIN services s ON pa.service_id = s.id
                 JOIN locations l ON pa.location_id = l.id
                 WHERE pa.user_id = :user_id";
-        return $this->db->query($sql, ['user_id' => $userId])->findAll();
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['user_id' => $userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getAdById(int $adId): ?array
@@ -69,14 +69,18 @@ class PetAd extends Model
                 JOIN locations l ON pa.location_id = l.id
                 JOIN users u ON pa.user_id = u.id
                 WHERE pa.id = :ad_id";
-        return $this->db->query($sql, ['ad_id' => $adId])->findOne();
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['ad_id' => $adId]);
+        $ad = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $ad ?: null;
     }
 
     public function create(array $data): ?int
     {
         $sql = "INSERT INTO pet_ads (service_id, user_id, title, description, cost, status, start_date, end_date, location_id) 
                 VALUES (:service_id, :user_id, :title, :description, :cost, :status, :start_date, :end_date, :location_id)";
-        $this->db->query($sql, [
+        $stmt = $this->db->prepare($sql);
+        $success = $stmt->execute([
             'service_id' => $data['service_id'],
             'user_id' => $data['user_id'],
             'title' => $data['title'],
@@ -88,7 +92,7 @@ class PetAd extends Model
             'location_id' => $data['location_id'],
         ]);
 
-        return (int)$this->db->lastInsertId();
+        return $success ? (int)$this->db->lastInsertId() : null;
     }
 
     public function getRecentAdsByUserId(int $userId, int $limit = 5): array
@@ -100,10 +104,11 @@ class PetAd extends Model
                 WHERE pa.user_id = :user_id
                 ORDER BY pa.created_at DESC
                 LIMIT :limit";
-        return $this->db->query($sql, [
-            'user_id' => $userId,
-            'limit' => $limit
-        ])->findAll();
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getRecentAds(int $limit = 5): array
@@ -114,6 +119,9 @@ class PetAd extends Model
                 JOIN locations l ON pa.location_id = l.id
                 ORDER BY pa.created_at DESC
                 LIMIT :limit";
-        return $this->db->query($sql, ['limit' => $limit])->findAll();
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
