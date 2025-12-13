@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Session;
 use App\Models\User;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -43,7 +44,9 @@ class AuthController extends Controller
 
     public function showRegister(): void
     {
-        $this->render('auth/register', ['pageTitle' => 'Create Account']);
+        $roleModel = new Role();
+        $roles = $roleModel->getAllRoles();
+        $this->render('auth/register', ['pageTitle' => 'Create Account', 'roles' => $roles]);
     }
 
     public function register(): void
@@ -58,7 +61,11 @@ class AuthController extends Controller
         if (empty($name)) $errors[] = 'Name is required.';
         if (empty($email)) $errors[] = 'A valid email is required.';
         if (strlen($password) < 8) $errors[] = 'Password must be at least 8 characters long.';
-        if (!in_array($role_id, [2, 3])) $errors[] = 'Please select a valid role.';
+
+        $roleModel = new Role();
+        $roles = $roleModel->getAllRoles();
+        $role_ids = array_column($roles, 'id');
+        if (!in_array($role_id, $role_ids)) $errors[] = 'Please select a valid role.';
 
         $userModel = new User();
         if ($userModel->emailExists($email)) {
