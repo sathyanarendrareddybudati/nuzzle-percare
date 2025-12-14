@@ -1,4 +1,3 @@
-<?php require __DIR__ . '/../layouts/main.php'; ?>
 
 <div class="container py-5">
     <div class="row">
