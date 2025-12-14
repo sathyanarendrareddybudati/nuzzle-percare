@@ -29,10 +29,12 @@ class AuthController extends Controller
         $user = $userModel->verifyCredentials($email, $password);
 
         if ($user) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_role'] = $user['role_name']; // Set user role
+            Session::set('user', [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'role' => $user['role_name']
+            ]);
 
             Session::flash('success', 'Welcome back, ' . e($user['name']) . '!');
             $this->redirect('/dashboard');
@@ -55,7 +57,7 @@ class AuthController extends Controller
         $name = trim($_POST['name'] ?? '');
         $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'] ?? '';
-        $role_id = $_POST['role_id'] ?? ''; // owner or caretaker
+        $role_id = $_POST['role_id'] ?? '';
 
         $errors = [];
         if (empty($name)) $errors[] = 'Name is required.';
@@ -87,10 +89,12 @@ class AuthController extends Controller
 
         if ($userId) {
             $user = $userModel->getById($userId);
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_role'] = $user['role_name'];
+            Session::set('user', [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'role' => $user['role_name']
+            ]);
 
             Session::flash('success', 'Account created successfully! Welcome!');
             $this->redirect('/dashboard');
@@ -123,10 +127,6 @@ class AuthController extends Controller
             return;
         }
 
-        // In a real application, you would generate a secure token, save it to the database with an expiry date,
-        // and send an email with a link containing the token.
-        // For this example, we'll just show a success message.
-
         Session::flash('success', 'If an account with that email exists, a password reset link has been sent.');
         $this->redirect('/forgot-password');
     }
@@ -135,8 +135,7 @@ class AuthController extends Controller
     public function logout(): void
     {
         Session::start();
-        session_unset();
-        session_destroy();
+        Session::destroy();
         $this->redirect('/');
     }
 }

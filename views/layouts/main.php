@@ -1,6 +1,8 @@
 <?php
 use App\Core\Session;
 
+Session::start();
+
 $user = Session::get('user');
 $userRole = $user['role'] ?? null;
 ?>
@@ -103,7 +105,6 @@ $userRole = $user['role'] ?? null;
                                 <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
                                 <?php if ($userRole === 'pet_owner'): ?>
                                     <li><a class="dropdown-item" href="/my-pets">My Pets</a></li>
-                                    <li><a class="dropdown-item" href="/my-ads">My Pet Ads</a></li>
                                 <?php endif; ?>
                                 <?php if ($userRole === 'service_provider'): ?>
                                     <li><a class="dropdown-item" href="/caretaker/profile">My Profile</a></li>
@@ -184,7 +185,7 @@ $userRole = $user['role'] ?? null;
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                     <p class="mb-0 small">&copy; <?= date('Y'); ?> PetCare. All rights reserved.</p>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
+                <div class_name="col-md-6 text-center text-md-end">
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item"><a href="#" class="text-decoration-none small">Privacy Policy</a></li>
                         <li class="list-inline-item"><span class="mx-2">•</span></li>

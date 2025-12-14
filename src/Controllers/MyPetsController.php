@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Session;
 use App\Models\Pet;
+use App\Models\PetAd;
 
 class MyPetsController extends Controller
 {
@@ -14,13 +15,18 @@ class MyPetsController extends Controller
             return;
         }
 
-        $petModel = new Pet();
         $userId = Session::get('user')['id'];
+        
+        $petModel = new Pet();
         $pets = $petModel->getPetsByUserId($userId);
 
+        $petAdModel = new PetAd();
+        $ads = $petAdModel->getAdsByUserId($userId);
+
         $this->render('my-pets/index', [
-            'pageTitle' => 'My Pets',
+            'pageTitle' => 'My Pet Dashboard',
             'pets' => $pets,
+            'ads' => $ads,
         ]);
     }
 }
