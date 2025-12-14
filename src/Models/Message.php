@@ -11,8 +11,8 @@ class Message extends Model
         $sql = "SELECT u.id as participant_id, u.name as participant_name, c.body_content as last_message, c.sent_at as last_message_date
                 FROM communication_log c
                 JOIN users u ON u.id = c.sender_user_id OR u.id = c.recipient_user_id
-                WHERE (c.sender_user_id = :user_id OR c.recipient_user_id = :user_id)
-                AND u.id != :user_id
+                WHERE (c.sender_user_id = :user_id1 OR c.recipient_user_id = :user_id2)
+                AND u.id != :user_id3
                 AND c.id IN (
                     SELECT MAX(id)
                     FROM communication_log
@@ -21,7 +21,11 @@ class Message extends Model
                 ORDER BY c.sent_at DESC";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute(['user_id' => $userId]);
+        $stmt->execute([
+            'user_id1' => $userId,
+            'user_id2' => $userId,
+            'user_id3' => $userId,
+        ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

@@ -8,8 +8,9 @@ class PetAd extends Model
 {
     public function all(): array
     {
-        $sql = "SELECT pa.*, s.name as species, l.name as location, u.name as user_name
+        $sql = "SELECT pa.*, p.name, p.gender, p.breed, p.age_years, s.name as species, l.name as location, u.name as user_name
                 FROM pet_ads pa
+                LEFT JOIN pets p ON pa.pet_id = p.id
                 JOIN services s ON pa.service_id = s.id
                 JOIN locations l ON pa.location_id = l.id
                 JOIN users u ON pa.user_id = u.id
@@ -20,8 +21,9 @@ class PetAd extends Model
 
     public function findAllWithFilters(array $filters): array
     {
-        $sql = "SELECT pa.*, s.name as species, l.name as location, u.name as user_name
+        $sql = "SELECT pa.*, p.name, p.gender, p.breed, p.age_years, s.name as species, l.name as location, u.name as user_name
                 FROM pet_ads pa
+                LEFT JOIN pets p ON pa.pet_id = p.id
                 JOIN services s ON pa.service_id = s.id
                 JOIN locations l ON pa.location_id = l.id
                 JOIN users u ON pa.user_id = u.id
@@ -29,7 +31,7 @@ class PetAd extends Model
         $params = [];
 
         if (!empty($filters['q'])) {
-            $sql .= " AND (pa.title LIKE :q OR pa.description LIKE :q OR l.name LIKE :q)";
+            $sql .= " AND (pa.title LIKE :q OR pa.description LIKE :q OR l.name LIKE :q OR p.name LIKE :q OR p.breed LIKE :q)";
             $params['q'] = '%' . $filters['q'] . '%';
         }
 
@@ -39,7 +41,7 @@ class PetAd extends Model
         }
 
         if (!empty($filters['gender'])) {
-            $sql .= " AND pa.gender = :gender";
+            $sql .= " AND p.gender = :gender";
             $params['gender'] = $filters['gender'];
         }
 
@@ -69,8 +71,9 @@ class PetAd extends Model
 
     public function getAdById(int $adId): ?array
     {
-        $sql = "SELECT pa.*, s.name as species, l.name as location, u.name as user_name, u.email as user_email
+        $sql = "SELECT pa.*, p.name, p.gender, p.breed, p.age_years, s.name as species, l.name as location, u.name as user_name, u.email as user_email
                 FROM pet_ads pa
+                LEFT JOIN pets p ON pa.pet_id = p.id
                 JOIN services s ON pa.service_id = s.id
                 JOIN locations l ON pa.location_id = l.id
                 JOIN users u ON pa.user_id = u.id
@@ -83,12 +86,13 @@ class PetAd extends Model
 
     public function create(array $data): ?int
     {
-        $sql = "INSERT INTO pet_ads (service_id, user_id, title, description, price, status, start_date, end_date, location_id) 
-                VALUES (:service_id, :user_id, :title, :description, :price, :status, :start_date, :end_date, :location_id)";
+        $sql = "INSERT INTO pet_ads (service_id, user_id, pet_id, title, description, price, status, start_date, end_date, location_id) 
+                VALUES (:service_id, :user_id, :pet_id, :title, :description, :price, :status, :start_date, :end_date, :location_id)";
         $stmt = $this->db->prepare($sql);
         $success = $stmt->execute([
             'service_id' => $data['service_id'],
             'user_id' => $data['user_id'],
+            'pet_id' => $data['pet_id'],
             'title' => $data['title'],
             'description' => $data['description'],
             'price' => $data['price'],
