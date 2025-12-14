@@ -35,7 +35,7 @@
     <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0">My Pet Ads</h2>
-            <a href="/pets/create" class="btn btn-primary btn-sm">+ Post New Ad</a>
+            <a href="/my-pets/create" class="btn btn-primary btn-sm">+ Post New Ad</a>
         </div>
         <div class="card-body">
             <?php if (empty($ads)) : ?>

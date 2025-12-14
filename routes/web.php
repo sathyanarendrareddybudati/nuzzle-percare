@@ -18,7 +18,7 @@ $router->get('/', [HomeController::class, 'index']);
 
 // Pet Ads
 $router->get('/pets', [PetAdsController::class, 'index']);
-$router->get('/pets/create', [PetAdsController::class, 'create']);
+$router->get('/my-pets/create', [PetAdsController::class, 'create']); // Changed from /pets/create
 $router->post('/pets', [PetAdsController::class, 'store']);
 $router->get('/pets/{id}', [PetAdsController::class, 'show']);
 $router->get('/pets/{id}/edit', [PetAdsController::class, 'edit']);

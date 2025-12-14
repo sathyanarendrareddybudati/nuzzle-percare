@@ -1,5 +1,3 @@
-<?php require __DIR__ . '/../layouts/main.php'; ?>
-
 <div class="container py-5">
     <h1 class="mb-4">Service Provider Dashboard</h1>
 
@@ -8,7 +6,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Recent Pet Ads</h5>
-                    <?php if (empty($recentAds)): ?>
+                    <?php if (empty($recentAds)):
                         <p>No pet ads posted recently.</p>
                     <?php else: ?>
                         <ul class="list-group list-group-flush">
@@ -27,7 +25,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">My Caretaker Profile</h5>
-                    <?php if ($profile): ?>
+                    <?php if ($profile):
                         <p class="card-text"><strong class="text-primary"><?= e($profile['title']) ?></strong></p>
                         <p class="text-muted">Manage your public profile and attract pet owners.</p>
                         <a href="/caretaker/profile" class="btn btn-outline-primary btn-sm">Edit Profile</a>

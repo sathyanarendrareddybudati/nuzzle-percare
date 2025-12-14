@@ -1,5 +1,3 @@
-<?php require __DIR__ . '/../layouts/main.php'; ?>
-
 <div class="container py-5">
     <h1 class="mb-4">My Caretaker Profile</h1>
 

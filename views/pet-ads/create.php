@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../partials/header.php'; ?>
-
 <div class="container my-5">
     <h1 class="text-center mb-4"><?= $pageTitle ?? 'Post a New Ad' ?></h1>
 
@@ -93,20 +91,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function toggleFields() {
         if (adType.value === 'adoption') {
-            // For adoption, you might not need to select an existing pet 
-            // if you are creating a new pet profile simultaneously.
-            // Or you might be selecting a pet you've already registered to put up for adoption.
             petSelection.style.display = 'block';
             serviceSelection.style.display = 'none';
-        } else { // service_request
+        } else {
             petSelection.style.display = 'block';
             serviceSelection.style.display = 'block';
         }
     }
 
     adType.addEventListener('change', toggleFields);
-    toggleFields(); // Initial check
+    toggleFields();
 });
 </script>
-
-<?php require_once __DIR__ . '/../partials/footer.php'; ?>
