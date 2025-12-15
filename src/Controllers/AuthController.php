@@ -108,6 +108,46 @@ class AuthController extends Controller
     {
         $this->render('auth/register_admin', ['pageTitle' => 'Admin Registration']);
     }
+
+    public function registerAdmin(): void
+    {
+        Session::start();
+        $name = trim($_POST['name'] ?? '');
+        $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
+        $role_id = 1; // Admin role ID
+
+        $errors = [];
+        if (empty($name)) $errors[] = 'Name is required.';
+        if (empty($email)) $errors[] = 'A valid email is required.';
+        if (strlen($password) < 8) $errors[] = 'Password must be at least 8 characters long.';
+
+        $userModel = new User();
+        if ($userModel->emailExists($email)) {
+            $errors[] = 'An account with this email already exists.';
+        }
+
+        if (!empty($errors)) {
+            Session::flash('error', implode('<br>', $errors));
+            $this->redirect('/register/admin');
+            return;
+        }
+
+        $userId = $userModel->create([
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'role_id' => $role_id,
+        ]);
+
+        if ($userId) {
+            Session::flash('success', 'Admin account created successfully!');
+            $this->redirect('/login');
+        } else {
+            Session::flash('error', 'There was a problem creating the admin account.');
+            $this->redirect('/register/admin');
+        }
+    }
     
     public function showForgotPasswordForm(): void
     {

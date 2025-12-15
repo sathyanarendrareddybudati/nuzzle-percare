@@ -7,12 +7,12 @@
                     <h1 class="h3 mb-3 fw-normal">Admin Registration</h1>
                 </div>
                 <div class="card-body">
-                    <?php if (App\Core\Session::has('error')): ?>
+                    <?php if (App\Core\Session::has('error')):
                         <div class="alert alert-danger">
                             <?= App\Core\Session::get('error') ?>
                         </div>
                     <?php endif; ?>
-                    <form action="/register" method="post">
+                    <form action="/register/admin" method="post">
                         <input type="hidden" name="role_id" value="1"> <!-- Assuming 1 is the ID for the admin role -->
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
