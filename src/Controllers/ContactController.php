@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Session;
 use App\Models\Contact;
+use App\Core\EmailService;
 
 class ContactController extends Controller
 {
@@ -41,9 +42,6 @@ class ContactController extends Controller
             ]);
 
             $to = $_ENV['SMTP_USERNAME'];
-            $headers  = "From: {$name} <{$email}>\r\n";
-            $headers .= "Reply-To: {$email}\r\n";
-            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
             $emailBody  = "<h2>New Contact Form Submission</h2>";
             $emailBody .= "<p><strong>Name:</strong> {$name}</p>";
@@ -51,9 +49,15 @@ class ContactController extends Controller
             $emailBody .= "<p><strong>Subject:</strong> {$subject}</p>";
             $emailBody .= "<p><strong>Message:</strong><br>" . nl2br($message) . "</p>";
 
-            mail($to, $subject, $emailBody, $headers);
+            $emailService = new EmailService();
+            $emailSent = $emailService->sendEmail($to, $subject, $emailBody);
 
-            Session::flash('success', 'Thanks for contacting us! We will get back to you soon.');
+            if ($emailSent) {
+                Session::flash('success', 'Thanks for contacting us! We will get back to you soon.');
+            } else {
+                Session::flash('error', 'There was an error sending your message. Please try again later.');
+            }
+
             $this->redirect('/contact');
         }
 
