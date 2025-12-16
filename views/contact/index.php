@@ -49,7 +49,7 @@
                 <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
               </div>
               <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                <button type="submit" class="btn btn-primary btn-lg">Send the Message</button>
               </div>
             </form>
           </div>
