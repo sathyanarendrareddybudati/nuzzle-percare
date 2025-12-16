@@ -11,6 +11,7 @@ use App\Controllers\CaretakerProfileController;
 use App\Controllers\CaretakerProfilesController;
 use App\Controllers\MessageController;
 use App\Controllers\MyPetsController;
+use App\Controllers\FaqController;
 
 /** @var \App\Core\Router $router */
 
@@ -42,6 +43,9 @@ $router->get('/logout', [AuthController::class, 'logout']);
 $router->get('/aboutus', [AboutUsController::class, 'index']);
 $router->get('/contact', [ContactController::class, 'index']);
 $router->post('/contact', [ContactController::class, 'submit']);
+
+// FAQ Page
+$router->get('/faq', [FaqController::class, 'index']);
 
 // Forgot Password
 $router->get('/forgot-password', [AuthController::class, 'showForgotPasswordForm']);

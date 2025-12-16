@@ -43,20 +43,29 @@ class User extends Model
         return $stmt->fetch() !== false;
     }
 
-    // Updated to hash passwords and use username
     public function create(array $data): ?int
     {
         $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO users (username, email, password, role_id) VALUES (:username, :email, :password, :role_id)";
+        $sql = "INSERT INTO users (name, email, password, role_id) VALUES (:name, :email, :password, :role_id)";
         $stmt = $this->db->prepare($sql);
         $success = $stmt->execute([
-            'username' => $data['username'],
+            'name' => $data['name'],
             'email' => $data['email'],
             'password' => $hashedPassword,
             'role_id' => $data['role_id'],
         ]);
 
         return $success ? (int)$this->db->lastInsertId() : null;
+    }
+
+    public function getAllUsersWithRoles(): array
+    {
+        $sql = "SELECT u.id, u.name, u.email, r.name as role_name
+                FROM users u
+                LEFT JOIN roles r ON u.role_id = r.id
+                ORDER BY u.id ASC";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
