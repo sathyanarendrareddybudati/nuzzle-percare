@@ -45,7 +45,7 @@ $router->get('/contact', [ContactController::class, 'index']);
 $router->post('/contact', [ContactController::class, 'submit']);
 
 // FAQ Page
-// $router->get('/faq', [FaqController::class, 'index']);
+$router->get('/faq', [FaqController::class, 'index']);
 
 // Forgot Password
 $router->get('/forgot-password', [AuthController::class, 'showForgotPasswordForm']);
