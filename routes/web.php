@@ -30,6 +30,9 @@ $router->post('/pets/{id}/delete', [PetAdsController::class, 'destroy']);
 $router->get('/my-pets', [MyPetsController::class, 'index']);
 $router->get('/my-pets/create', [MyPetsController::class, 'create']);
 $router->post('/my-pets', [MyPetsController::class, 'store']);
+$router->get('/my-pets/{id}/edit', [MyPetsController::class, 'edit']);
+$router->post('/my-pets/{id}', [MyPetsController::class, 'update']);
+$router->post('/my-pets/{id}/delete', [MyPetsController::class, 'destroy']);
 
 $router->get('/caretakers', [CaretakerProfilesController::class, 'index']);
 
