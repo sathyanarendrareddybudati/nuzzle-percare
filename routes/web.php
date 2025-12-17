@@ -18,7 +18,7 @@ use App\Controllers\FaqController;
 $router->get('/', [HomeController::class, 'index']);
 
 // Pet Ads
-// $router->get('/pets', [PetAdsController::class, 'index']);
+$router->get('/pets', [PetAdsController::class, 'index']);
 // $router->get('/my-pets/create', [PetAdsController::class, 'create']); // Changed from /pets/create
 // $router->post('/pets', [PetAdsController::class, 'store']);
 // $router->get('/pets/{id}', [PetAdsController::class, 'show']);
