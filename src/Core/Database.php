@@ -27,9 +27,7 @@ class Database
         try {
             $this->pdo = new PDO($dsn, $user, $pass, $options);
         } catch (PDOException $e) {
-            if (($_ENV['APP_ENV'] ?? '') === 'development') {
-                throw new Exception('DB connection failed: ' . $e->getMessage());
-            }
+            // Throw a generic exception to avoid exposing sensitive information.
             throw new Exception('Database connection failed.');
         }
     }
