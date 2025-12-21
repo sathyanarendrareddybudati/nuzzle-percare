@@ -170,7 +170,7 @@ class PetAd extends Model
 
     public function getRecentAdsByUserId(int $userId, int $limit = 5): array
     {
-        $sql = "SELECT pa.*, s.name as service_name, l.name as location_name
+        $sql = "SELECT pa.*, s.name as service_name, l.name as location
                 FROM pet_ads pa
                 JOIN services s ON pa.service_id = s.id
                 JOIN locations l ON pa.location_id = l.id
@@ -186,7 +186,7 @@ class PetAd extends Model
 
     public function getRecentAds(int $limit = 5): array
     {
-        $sql = "SELECT pa.*, s.name as service_name, l.name as location_name
+        $sql = "SELECT pa.*, s.name as service_name, l.name as location
                 FROM pet_ads pa
                 JOIN services s ON pa.service_id = s.id
                 JOIN locations l ON pa.location_id = l.id

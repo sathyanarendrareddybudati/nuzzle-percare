@@ -9,17 +9,6 @@ use App\Services\FirebaseStorageService;
 
 class MyPetsController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        // Protect all methods in this controller
-        if (!Session::isAuthenticated() || Session::getUserRole() !== 'pet_owner') {
-            Session::flash('error', 'You must be logged in as a pet owner to access this page.');
-            $this->redirect('/login');
-            exit;
-        }
-    }
-
     public function index(): void
     {
         $userId = Session::get('user')['id'];
