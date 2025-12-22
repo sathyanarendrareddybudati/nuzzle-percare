@@ -21,7 +21,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Expose port
-EXPOSE 8000
+EXPOSE 10000
 
 # Start PHP server
-CMD php -S 0.0.0.0:8000
+CMD php -S 0.0.0.0:10000
