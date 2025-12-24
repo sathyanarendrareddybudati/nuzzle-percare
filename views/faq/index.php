@@ -1,4 +1,3 @@
-<?php require_once __DIR__ . '/../layouts/main.php'; ?>
 
 <div class="container my-5">
     <h1 class="text-center mb-4">Frequently Asked Questions</h1>

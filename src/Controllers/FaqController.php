@@ -12,7 +12,7 @@ class FaqController extends Controller
         $faqModel = new Faq();
         $faqs = $faqModel->findAll();
 
-        $this->view('faq/index', [
+        $this->render('faq/index', [
             'faqs' => $faqs
         ]);
     }
@@ -22,14 +22,14 @@ class FaqController extends Controller
         $faqModel = new Faq();
         $faqs = $faqModel->findAll();
 
-        $this->view('faq/admin_index', [
+        $this->render('faq/admin_index', [
             'faqs' => $faqs
         ]);
     }
 
     public function create()
     {
-        $this->view('faq/create');
+        $this->render('faq/create');
     }
 
     public function store()
@@ -48,7 +48,7 @@ class FaqController extends Controller
         $faqModel = new Faq();
         $faq = $faqModel->find($id);
 
-        $this->view('faq/edit', [
+        $this->render('faq/edit', [
             'faq' => $faq
         ]);
     }
