@@ -77,6 +77,15 @@ $router->post('/admin/users/update/{id}', [AdminController::class, 'updateUser']
 $router->post('/admin/users/delete/{id}', [AdminController::class, 'deleteUser'])->middleware('AdminMiddleware');
 $router->get('/admin/content', [AdminController::class, 'content'])->middleware('AdminMiddleware');
 
+// FAQ Admin
+$router->get('/admin/faq', [FaqController::class, 'adminIndex'])->middleware('AdminMiddleware');
+$router->get('/admin/faq/create', [FaqController::class, 'create'])->middleware('AdminMiddleware');
+$router->post('/admin/faq', [FaqController::class, 'store'])->middleware('AdminMiddleware');
+$router->get('/admin/faq/edit/{id}', [FaqController::class, 'edit'])->middleware('AdminMiddleware');
+$router->post('/admin/faq/update/{id}', [FaqController::class, 'update'])->middleware('AdminMiddleware');
+$router->post('/admin/faq/delete/{id}', [FaqController::class, 'destroy'])->middleware('AdminMiddleware');
+
+
 // Dashboard Route
 $router->get('/dashboard', [DashboardController::class, 'index']);
 $router->get('/dashboard/caretaker', [DashboardController::class, 'caretaker']);

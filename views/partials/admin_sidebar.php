@@ -15,4 +15,7 @@ $current_page = $_SERVER['REQUEST_URI'];
     <a href="/admin/content" class="list-group-item list-group-item-action <?= (strpos($current_page, '/admin/content') !== false) ? 'active' : '' ?>">
         <i class="fas fa-file-alt me-2"></i> Manage Content
     </a>
+    <a href="/admin/faq" class="list-group-item list-group-item-action <?= (strpos($current_page, '/admin/faq') !== false) ? 'active' : '' ?>">
+        <i class="fas fa-question-circle me-2"></i> Manage FAQs
+    </a>
 </div>
