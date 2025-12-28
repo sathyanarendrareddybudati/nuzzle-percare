@@ -2,7 +2,7 @@
     <h1 class="mb-4">Service Provider Dashboard</h1>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Recent Pet Ads</h5>
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">My Caretaker Profile</h5>
@@ -54,6 +54,15 @@
                         </a>
                     <?php endif; ?>
 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">My Profile</h5>
+                    <p class="card-text text-center fs-1 fw-bold"><i class="fas fa-user-cog"></i></p>
+                    <a href="/profile" class="btn btn-info">My Profile</a>
                 </div>
             </div>
         </div>

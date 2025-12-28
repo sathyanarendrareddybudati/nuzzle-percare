@@ -33,6 +33,70 @@ class MyPetsController extends Controller
         ]);
     }
 
+    public function createFromAd(): void
+    {
+        header('Content-Type: application/json');
+        $response = ['success' => false];
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $response['message'] = 'Invalid request method.';
+            echo json_encode($response);
+            return;
+        }
+
+        $userId = Session::get('user')['id'];
+        $data = [
+            'user_id' => $userId,
+            'name' => trim($_POST['name']),
+            'species' => trim($_POST['species']),
+            'breed' => trim($_POST['breed']),
+            'age' => $_POST['age'] ? (int)$_POST['age'] : null,
+            'image_url' => null,
+        ];
+
+        if (empty($data['name']) || empty($data['species'])) {
+            $response['message'] = 'Pet name and species are required.';
+            echo json_encode($response);
+            return;
+        }
+
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['photo'];
+            $storageService = new FirebaseStorageService();
+            try {
+                $data['image_url'] = $storageService->uploadImage($file['tmp_name'], $file['name']);
+            } catch (\Exception $e) {
+                $response['message'] = 'Failed to upload image to cloud storage: ' . $e->getMessage();
+                echo json_encode($response);
+                return;
+            }
+        }
+
+        $petModel = new Pet();
+        $petId = $petModel->create($data);
+
+        if ($petId) {
+            $response['success'] = true;
+            $response['pet'] = [
+                'id' => $petId,
+                'name' => $data['name']
+            ];
+        } else {
+            if ($data['image_url']) {
+                try {
+                    $storageService = new FirebaseStorageService();
+                    $storageService->deleteFileByUrl($data['image_url']);
+                } catch (\Exception $e) {
+                    error_log('Failed to delete orphaned Firebase Storage file: ' . $data['image_url']);
+                }
+            }
+            $response['message'] = 'Failed to add pet.';
+        }
+
+        echo json_encode($response);
+    }
+
+
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

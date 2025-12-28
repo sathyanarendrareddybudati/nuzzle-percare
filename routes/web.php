@@ -13,6 +13,7 @@ use App\Controllers\MessageController;
 use App\Controllers\MyPetsController;
 use App\Controllers\FaqController;
 use App\Controllers\BookingsController;
+use App\Controllers\ProfileController;
 
 /** @var \App\Core\Router $router */
 
@@ -30,6 +31,7 @@ $router->post('/pets/{id}/delete', [PetAdsController::class, 'destroy']);
 // My Pets (Pet Profile Management)
 $router->get('/my-pets', [MyPetsController::class, 'index'])->middleware('PetOwnerMiddleware');
 $router->get('/my-pets/create', [MyPetsController::class, 'create'])->middleware('PetOwnerMiddleware');
+$router->post('/my-pets/create-from-ad', [MyPetsController::class, 'createFromAd'])->middleware('PetOwnerMiddleware');
 $router->post('/my-pets', [MyPetsController::class, 'store'])->middleware('PetOwnerMiddleware');
 $router->get('/my-pets/{id}/edit', [MyPetsController::class, 'edit'])->middleware('PetOwnerMiddleware');
 $router->post('/my-pets/{id}', [MyPetsController::class, 'update'])->middleware('PetOwnerMiddleware');
@@ -66,6 +68,11 @@ $router->get('/faq', [FaqController::class, 'index']);
 // Forgot Password
 $router->get('/forgot-password', [AuthController::class, 'showForgotPasswordForm']);
 $router->post('/forgot-password', [AuthController::class, 'handleForgotPasswordRequest']);
+
+// Profile
+$router->get('/profile', [ProfileController::class, 'index'])->middleware('AuthMiddleware');
+$router->post('/profile/update-password', [ProfileController::class, 'updatePassword'])->middleware('AuthMiddleware');
+
 
 // Admin Routes
 $router->get('/admin', [AdminController::class, 'index'])->middleware('AdminMiddleware');

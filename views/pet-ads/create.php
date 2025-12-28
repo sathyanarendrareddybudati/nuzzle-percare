@@ -5,7 +5,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form action="/pets" method="POST">
+                    <form action="/pets" method="POST" id="new-ad-form">
                         <div class="mb-3">
                             <label for="ad_type" class="form-label">Ad Type</label>
                             <select class="form-select" id="ad_type" name="ad_type" required>
@@ -26,12 +26,15 @@
 
                         <div class="mb-3" id="pet-selection">
                             <label for="pet_id" class="form-label">Which pet is this for?</label>
-                            <select class="form-select" id="pet_id" name="pet_id">
-                                <option value="">-- Select a Pet --</option>
-                                <?php foreach ($pets as $pet): ?>
-                                    <option value="<?= $pet['id'] ?>"><?= htmlspecialchars($pet['name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <div class="input-group">
+                                <select class="form-select" id="pet_id" name="pet_id">
+                                    <option value="">-- Select a Pet --</option>
+                                    <?php foreach ($pets as $pet): ?>
+                                        <option value="<?= $pet['id'] ?>"><?= htmlspecialchars($pet['name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#add-pet-modal">Add</button>
+                            </div>
                         </div>
 
                         <div class="mb-3" id="service-selection">
@@ -83,11 +86,56 @@
     </div>
 </div>
 
+<!-- Add Pet Modal -->
+<div class="modal fade" id="add-pet-modal" tabindex="-1" aria-labelledby="addPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPetModalLabel">Add a New Pet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-pet-form">
+                    <div class="mb-3">
+                        <label for="pet-name" class="form-label">Pet Name</label>
+                        <input type="text" class="form-control" id="pet-name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pet-species" class="form-label">Species</label>
+                        <input type="text" class="form-control" id="pet-species" name="species" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pet-breed" class="form-label">Breed</label>
+                        <input type="text" class="form-control" id="pet-breed" name="breed">
+                    </div>
+                    <div class="mb-3">
+                        <label for="pet-age" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="pet-age" name="age" min="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="pet-photo" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="pet-photo" name="photo">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save-pet-btn">Save Pet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const adType = document.getElementById('ad_type');
     const petSelection = document.getElementById('pet-selection');
     const serviceSelection = document.getElementById('service-selection');
+    const savePetBtn = document.getElementById('save-pet-btn');
+    const addPetForm = document.getElementById('add-pet-form');
+    const petIdDropdown = document.getElementById('pet_id');
+    const addPetModal = new bootstrap.Modal(document.getElementById('add-pet-modal'));
 
     function toggleFields() {
         if (adType.value === 'adoption') {
@@ -101,5 +149,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
     adType.addEventListener('change', toggleFields);
     toggleFields();
+
+    savePetBtn.addEventListener('click', function () {
+        const formData = new FormData(addPetForm);
+
+        fetch('/my-pets/create', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const newOption = new Option(data.pet.name, data.pet.id, true, true);
+                petIdDropdown.add(newOption);
+                addPetModal.hide();
+                addPetForm.reset();
+            } else {
+                // Handle errors
+                alert('Error adding pet: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        });
+    });
 });
 </script>

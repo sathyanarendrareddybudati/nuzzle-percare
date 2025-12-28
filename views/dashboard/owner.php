@@ -8,7 +8,7 @@
 
     <div class="row g-4 mt-4">
         <!-- Quick Stats -->
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-center h-100">
                 <div class="card-body">
                     <h5 class="card-title">Your Ads</h5>
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-center h-100">
                 <div class="card-body">
                     <h5 class="card-title">New Applications</h5>
@@ -26,12 +26,21 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-center h-100">
                 <div class="card-body">
                     <h5 class="card-title">Messages</h5>
                     <p class="fs-1 fw-bold">0</p>
                     <a href="/messages" class="btn btn-secondary disabled">Read Messages</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <h5 class="card-title">My Profile</h5>
+                    <p class="fs-1 fw-bold"><i class="fas fa-user-cog"></i></p>
+                    <a href="/profile" class="btn btn-info">My Profile</a>
                 </div>
             </div>
         </div>
