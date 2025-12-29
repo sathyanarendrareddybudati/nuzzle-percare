@@ -186,10 +186,12 @@ class PetAd extends Model
 
     public function getRecentAds(int $limit = 5): array
     {
-        $sql = "SELECT pa.*, s.name as service_name, l.name as location
+        $sql = "SELECT pa.*, s.name AS service_name, l.name AS location_name, p.name AS pet_name, c.name AS species
                 FROM pet_ads pa
                 JOIN services s ON pa.service_id = s.id
                 JOIN locations l ON pa.location_id = l.id
+                LEFT JOIN pets p ON pa.pet_id = p.id
+                LEFT JOIN pet_categories c ON p.category_id = c.id
                 ORDER BY pa.created_at DESC
                 LIMIT :limit";
         $stmt = $this->db->prepare($sql);

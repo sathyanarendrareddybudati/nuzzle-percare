@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -7,165 +8,96 @@ use App\Models\Pet;
 use App\Models\Service;
 use App\Models\Location;
 use App\Core\Session;
+use App\Models\PetCategory;
 
 class PetAdsController extends Controller
 {
     public function index(): void
     {
-        $filters = [
-            'species' => $_GET['species'] ?? '',
-            'gender' => $_GET['gender'] ?? '',
-            'q' => $_GET['q'] ?? '',
-            'sort' => $_GET['sort'] ?? 'newest',
-            'service_type' => $_GET['service_type'] ?? '',
-            'location' => $_GET['location'] ?? '',
-        ];
-
-        $petAdModel = new PetAd();
-        $locationModel = new Location();
-        $serviceModel = new Service();
-
-        $pets = $petAdModel->findAllWithFilters($filters);
-        $locations = $locationModel->all();
-        $services = $serviceModel->getAllServices();
-
         $this->render('pet-ads/index', [
-            'pets' => $pets,
-            'pageTitle' => 'Browse Pet Service Ads',
-            'filters' => $filters,
-            'locations' => $locations,
-            'services' => $services,
+            'pageTitle' => 'Find Pet Care Services'
         ]);
-    }
-
-    public function show($id): void
-    {
-        $id = (int)$id;
-        $petAdModel = new PetAd();
-        $ad = $petAdModel->getAdById($id);
-        if (!$ad) {
-            $this->redirect('/pets');
-        }
-
-        $this->render('pet-ads/show', ['ad' => $ad, 'pageTitle' => $ad['title']]);
     }
 
     public function create(): void
     {
         Session::start();
-        if (!Session::get('user')) {
+        $user = Session::get('user');
+
+        if (!$user) {
+            Session::flash('error', 'You must be logged in to create an ad.');
             $this->redirect('/login');
             return;
         }
 
         $petModel = new Pet();
+        $pets = $petModel->getPetsByUserId($user['id']);
+        
         $serviceModel = new Service();
-        $locationModel = new Location();
+        $services = $serviceModel->all();
 
-        $userId = Session::get('user')['id'];
-        $pets = $petModel->getPetsByUserId($userId);
-        $services = $serviceModel->getAllServices();
+        $locationModel = new Location();
         $locations = $locationModel->all();
+
+        $categoryModel = new PetCategory();
+        $categories = $categoryModel->all();
 
         $this->render('pet-ads/create', [
             'pageTitle' => 'Post a New Pet Ad',
             'pets' => $pets,
             'services' => $services,
             'locations' => $locations,
+            'categories' => $categories
         ]);
     }
 
     public function store(): void
     {
         Session::start();
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Session::get('user')) {
-            $this->redirect('/login');
+        $user = Session::get('user');
+        if (!$user) {
+            $this->json(['success' => false, 'message' => 'Authentication required.']);
             return;
         }
 
         $data = [
-            'user_id' => Session::get('user')['id'],
-            'pet_id' => $_POST['pet_id'],
-            'service_id' => $_POST['service_id'],
-            'title' => trim($_POST['title']),
-            'description' => trim($_POST['description']),
+            'user_id' => $user['id'],
+            'ad_type' => $_POST['ad_type'],
+            'title' => $_POST['title'],
+            'description' => $_POST['description'],
+            'pet_id' => $_POST['pet_id'] ?? null,
+            'service_id' => $_POST['service_id'] ?? null,
             'price' => $_POST['price'],
             'location_id' => $_POST['location_id'],
-            'start_date' => $_POST['start_date'],
-            'end_date' => $_POST['end_date'],
-            'ad_type' => $_POST['ad_type'],
-            'status' => 'active',
+            'start_date' => $_POST['start_date'] ?? null,
+            'end_date' => $_POST['end_date'] ?? null,
+            'status' => 'open' 
         ];
-
-        if (empty($data['title']) || empty($data['description']) || empty($data['price'])) {
-            Session::flash('error', 'All fields are required.');
-            $this->redirect('/my-pets/create');
-            return;
-        }
 
         $petAdModel = new PetAd();
         $adId = $petAdModel->create($data);
 
         if ($adId) {
-            Session::flash('success', 'Pet ad created successfully!');
-            $this->redirect('/pets/' . $adId);
+            $this->json(['success' => true, 'ad_id' => $adId]);
         } else {
-            Session::flash('error', 'Failed to create pet ad.');
-            $this->redirect('/my-pets/create');
+            $this->json(['success' => false, 'message' => 'Failed to create ad.']);
         }
     }
 
-    public function edit($id): void
+    public function show(int $id): void
     {
-        $id = (int)$id;
         $petAdModel = new PetAd();
-        $ad = $petAdModel->find($id);
+        $ad = $petAdModel->getAdById($id);
 
-        if (!$ad || $ad['user_id'] !== Session::get('user')['id']) {
-            $this->redirect('/my-pets');
+        if (!$ad) {
+            http_response_code(404);
+            $this->render('errors/404', ['pageTitle' => 'Ad Not Found']);
             return;
         }
 
-        $this->render('pet-ads/edit', [
-            'pageTitle' => 'Edit Pet Ad',
-            'ad' => $ad,
+        $this->render('pet-ads/show', [
+            'pageTitle' => $ad['title'],
+            'ad' => $ad
         ]);
-    }
-
-    public function update($id): void
-    {
-        $id = (int)$id;
-        $petAdModel = new PetAd();
-        $ad = $petAdModel->find($id);
-
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$ad || $ad['user_id'] !== Session::get('user')['id']) {
-            $this->redirect('/my-pets');
-            return;
-        }
-
-        $data = [
-            'title' => $_POST['title'],
-            'description' => $_POST['description'],
-            'price' => $_POST['price'],
-        ];
-
-        if ($petAdModel->update($id, $data)) {
-            $this->redirect('/my-pets');
-        } else {
-            $this->redirect("/pets/{$id}/edit");
-        }
-    }
-
-    public function destroy($id): void
-    {
-        $id = (int)$id;
-        $petAdModel = new PetAd();
-        $ad = $petAdModel->find($id);
-
-        if ($ad && $ad['user_id'] === Session::get('user')['id']) {
-            $petAdModel->delete($id);
-        }
-
-        $this->redirect('/my-pets');
     }
 }

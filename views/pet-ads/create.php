@@ -95,27 +95,49 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="add-pet-form">
+                <form id="add-pet-form" enctype="multipart/form-data">
+
                     <div class="mb-3">
                         <label for="pet-name" class="form-label">Pet Name</label>
                         <input type="text" class="form-control" id="pet-name" name="name" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="pet-species" class="form-label">Species</label>
-                        <input type="text" class="form-control" id="pet-species" name="species" required>
+                        <label for="pet-category" class="form-label">Pet Category</label>
+                        <select class="form-select" id="pet-category" name="category_id" required>
+                            <option value="">-- Select Category --</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $category['id'] ?>"><?= htmlspecialchars($category['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
+
                     <div class="mb-3">
                         <label for="pet-breed" class="form-label">Breed</label>
                         <input type="text" class="form-control" id="pet-breed" name="breed">
                     </div>
-                    <div class="mb-3">
-                        <label for="pet-age" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="pet-age" name="age" min="0">
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="pet-age" class="form-label">Age (Years)</label>
+                            <input type="number" class="form-control" id="pet-age" name="age_years" min="0">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="pet-gender" class="form-label">Gender</label>
+                            <select class="form-select" id="pet-gender" name="gender">
+                                <option value="">-- Select Gender --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
                     </div>
+
                     <div class="mb-3">
-                        <label for="pet-photo" class="form-label">Photo</label>
-                        <input type="file" class="form-control" id="pet-photo" name="photo">
+                        <label for="pet-image" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="pet-image" name="image">
                     </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -125,7 +147,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

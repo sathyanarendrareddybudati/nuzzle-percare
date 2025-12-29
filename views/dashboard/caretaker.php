@@ -17,7 +17,7 @@
                                         <?= e($ad['title']) ?>
                                     </a>
                                     <small class="text-muted">
-                                        in <?= e($ad['location_name']) ?>
+                                        for <?= e($ad['service_name']) ?> in <?= e($ad['location_name']) ?>
                                     </small>
                                 </li>
                             <?php endforeach; ?>
@@ -62,7 +62,7 @@
                 <div class="card-body">
                     <h5 class="card-title">My Profile</h5>
                     <p class="card-text text-center fs-1 fw-bold"><i class="fas fa-user-cog"></i></p>
-                    <a href="/profile" class="btn btn-info">My Profile</a>
+                    <a href="/profile" class.="btn btn-info">My Profile</a>
                 </div>
             </div>
         </div>
