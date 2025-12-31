@@ -111,7 +111,7 @@ $userRole = $user['role'] ?? null;
                                     <li><a class="dropdown-item" href="/caretaker/profile">My Profile</a></li>
                                 <?php endif; ?>
                                 <?php if ($userRole === 'pet_owner' || $userRole === 'service_provider'): ?>
-                                    <li><a class="dropdown-item" href="/bookings">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="/bookings">My Bookings</a></li>
                                 <?php endif; ?>
                                 <li><a class="dropdown-item" href="/messages">Messages</a></li>
                             <?php endif; ?>

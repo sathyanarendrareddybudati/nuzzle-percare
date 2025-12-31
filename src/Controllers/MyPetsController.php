@@ -48,20 +48,21 @@ class MyPetsController extends Controller
         $data = [
             'user_id' => $userId,
             'name' => trim($_POST['name']),
-            'species' => trim($_POST['species']),
+            'category_id' => $_POST['category_id'],
             'breed' => trim($_POST['breed']),
-            'age' => $_POST['age'] ? (int)$_POST['age'] : null,
+            'age_years' => $_POST['age_years'] ? (int)$_POST['age_years'] : null,
+            'gender' => $_POST['gender'],
             'image_url' => null,
         ];
 
-        if (empty($data['name']) || empty($data['species'])) {
-            $response['message'] = 'Pet name and species are required.';
+        if (empty($data['name']) || empty($data['category_id'])) {
+            $response['message'] = 'Pet name and category are required.';
             echo json_encode($response);
             return;
         }
 
-        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-            $file = $_FILES['photo'];
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['image'];
             $storageService = new FirebaseStorageService();
             try {
                 $data['image_url'] = $storageService->uploadImage($file['tmp_name'], $file['name']);
